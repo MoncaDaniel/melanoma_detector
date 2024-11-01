@@ -28,4 +28,30 @@ with gr.Blocks() as demo:
     gr.Markdown("# Melanoma Detection App")
     gr.Markdown("""
     This application analyzes skin lesion images and predicts whether the lesion is likely melanoma or benign.
-    **Instructions**: Upload a clear, zoomed-in image of the skin lesion, crop it 
+    **Instructions**: Upload a clear, zoomed-in image of the skin lesion, crop it as needed, and click "Submit" for analysis.
+    
+    ### Example Image
+    Below is an example image showing the ideal close-up, zoomed format.
+    """)
+    
+    # Example image display
+    example_image = gr.Image("example_melanoma.jpg", label="Example Image (Zoomed and Cropped)")
+
+    # Image upload with cropping instructions
+    gr.Markdown("### Upload and Crop Your Image")
+
+    # Language selection dropdown
+    language = gr.Dropdown(choices=["English", "Spanish", "French"], value="English", label="Select Language")
+
+    # Image upload section
+    with gr.Row():
+        with gr.Column():
+            image_input = gr.Image(type="pil", label="Upload Your Image")
+            submit_btn = gr.Button("Submit for Analysis")
+        
+        with gr.Column():
+            result_output = gr.Textbox(label="Diagnosis Result", placeholder="Result will appear here")
+
+    submit_btn.click(predict_image, inputs=image_input, outputs=result_output)
+
+demo.launch()

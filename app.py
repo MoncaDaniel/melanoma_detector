@@ -7,11 +7,11 @@ import numpy as np
 # Load the model
 model = load_model("melanoma_model.keras")
 
-# Function for prediction
+# Function for prediction with a threshold of 70%
 def predict_image(image):
-    # Preprocess the image to match model's input requirements
+    # Preprocess the image
     image = image.convert("RGB")
-    image = image.resize((128, 128))  # Resize to the model’s input size
+    image = image.resize((128, 128))  # Ensure correct input size
     image = img_to_array(image) / 255.0  # Normalize
     image = np.expand_dims(image, axis=0)  # Add batch dimension
 
@@ -19,39 +19,37 @@ def predict_image(image):
     prediction = model.predict(image)
     confidence = float(prediction[0][0])
 
-    # Set threshold for diagnosis
-    result = "Melanoma" if confidence >= 0.6 else "Benign"
+    # Updated threshold for melanoma classification
+    result = "Melanoma" if confidence >= 0.7 else "Benign"
     return f"Result: {result} - Confidence: {confidence:.2f}"
 
-# UI with Gradio Blocks
+# Gradio app with example image and updated interface
 with gr.Blocks() as demo:
     gr.Markdown("# Melanoma Detection App")
     gr.Markdown("""
     This application analyzes skin lesion images and predicts whether the lesion is likely melanoma or benign.
-    **Instructions**: Upload a clear, zoomed-in image of the skin lesion, crop it as needed, and click "Submit" for analysis.
+    
+    **Instructions**: Please upload a clear, zoomed-in image of the skin lesion, similar to the example image below. Ensure the lesion area fills most of the image frame for accurate analysis.
     
     ### Example Image
-    Below is an example image showing the ideal close-up, zoomed format.
+    Below is an example showing the ideal format and zoom level for your image.
     """)
     
-    # Example image display
+    # Display example image as a guide
     example_image = gr.Image("example_melanoma.jpg", label="Example Image (Zoomed and Cropped)")
 
-    # Image upload with cropping instructions
-    gr.Markdown("### Upload and Crop Your Image")
-
-    # Language selection dropdown
-    language = gr.Dropdown(choices=["English", "Spanish", "French"], value="English", label="Select Language")
-
-    # Image upload section
+    gr.Markdown("### Upload Your Image for Analysis")
+    
+    # Image upload and result output section
     with gr.Row():
         with gr.Column():
             image_input = gr.Image(type="pil", label="Upload Your Image")
             submit_btn = gr.Button("Submit for Analysis")
         
         with gr.Column():
-            result_output = gr.Textbox(label="Diagnosis Result", placeholder="Result will appear here")
+            result_output = gr.Textbox(label="Diagnosis Result", placeholder="The result will appear here")
 
+    # Trigger prediction on button click
     submit_btn.click(predict_image, inputs=image_input, outputs=result_output)
 
 demo.launch()

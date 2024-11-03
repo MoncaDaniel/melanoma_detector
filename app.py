@@ -49,17 +49,19 @@ def predict_image(image):
 
 # Gradio app with example image and updated interface
 with gr.Blocks() as demo:
-    gr.Markdown("# 🩺 Melanoma Detection App")
+    gr.Markdown("<h1 style='text-align: center;'>🔍 Melanoma Detection App</h1>")
     gr.Markdown("""
-    This AI tool is designed to help detect melanoma from skin lesion images. However, since we're using only free resources for training and deployment, please follow these instructions to get the best results! 🌟
+    <div style="text-align: center; font-size: 1.2em; color: #333;">
+    <p>This AI tool helps detect melanoma from skin lesion images. It’s as accurate as top-notch models, but since we’re using only free resources, please follow these steps to get the best results! 🌟</p>
+    </div>
+    
+    ### Instructions for Best Results:
+    1. ✂️ **Crop your image** to match the example below. This helps the AI focus on the lesion!
+    2. 🧔 **Avoid body hair** in the image (we know it’s natural, but it can confuse our model!).
+    3. 🖼️ **Upload a high-resolution photo** for clearer analysis.
 
-    ### How to Get the Best Results:
-    1. **Crop your image** to look like our example below. This helps the AI focus on the lesion! ✂️
-    2. **Avoid body hair** in the image (we know it's natural, but it confuses our model!). 🙆‍♂️
-    3. **Upload a high-resolution photo** for better accuracy. 📸
-
-    ⚠️ **Important**: If you're concerned about anything, see a medical professional immediately! This tool is here to support you, but it’s not a substitute for medical advice.  
-    Stay healthy and take care! 🍀  
+    ⚠️ **Important**: If you’re worried about anything, please see a medical professional immediately! This tool is here to support, not replace professional advice.  
+    Take care of your health! 💪🍀  
     -- Daniel
     
     ### Example Image
@@ -75,7 +77,7 @@ with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column():
             image_input = gr.Image(type="pil", label="Upload Your Image")
-            submit_btn = gr.Button("Submit for Analysis")
+            submit_btn = gr.Button("🔍 Submit for Analysis")
         
         with gr.Column():
             result_output = gr.Textbox(label="Diagnosis Result", placeholder="The result will appear here")

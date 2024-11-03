@@ -1,6 +1,23 @@
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+logger.info("Starting application")
+logger.info(f"Python version: {os.sys.version}")
+logger.info(f"Installed packages: {os.popen('pip freeze').read()}")
+
+try:
+    # Place code for loading the model or initializing Gradio here
+    logger.info("Model and Gradio initialized successfully")
+except Exception as e:
+    logger.error("Error during startup", exc_info=True)
+    raise e
+
+
 import gradio as gr
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array

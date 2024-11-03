@@ -49,11 +49,18 @@ def predict_image(image):
 
 # Gradio app with example image and updated interface
 with gr.Blocks() as demo:
-    gr.Markdown("# Melanoma Detection App")
+    gr.Markdown("# 🩺 Melanoma Detection App")
     gr.Markdown("""
-    This application analyzes skin lesion images and predicts whether the lesion is likely melanoma or benign.
-    
-    **Instructions**: Please upload a clear, zoomed-in image of the skin lesion, similar to the example image below. Ensure the lesion area fills most of the image frame for accurate analysis.
+    This AI tool is designed to help detect melanoma from skin lesion images. However, since we're using only free resources for training and deployment, please follow these instructions to get the best results! 🌟
+
+    ### How to Get the Best Results:
+    1. **Crop your image** to look like our example below. This helps the AI focus on the lesion! ✂️
+    2. **Avoid body hair** in the image (we know it's natural, but it confuses our model!). 🙆‍♂️
+    3. **Upload a high-resolution photo** for better accuracy. 📸
+
+    ⚠️ **Important**: If you're concerned about anything, see a medical professional immediately! This tool is here to support you, but it’s not a substitute for medical advice.  
+    Stay healthy and take care! 🍀  
+    -- Daniel
     
     ### Example Image
     Below is an example showing the ideal format and zoom level for your image.

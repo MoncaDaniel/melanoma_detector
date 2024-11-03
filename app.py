@@ -1,8 +1,16 @@
 import os
+import logging
+import gradio as gr
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import img_to_array
+from PIL import Image
+import numpy as np
+import traceback
+
+# Disable GPU usage
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-import logging
-
+# Logging setup
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -11,37 +19,33 @@ logger.info(f"Python version: {os.sys.version}")
 logger.info(f"Installed packages: {os.popen('pip freeze').read()}")
 
 try:
-    # Place code for loading the model or initializing Gradio here
-    logger.info("Model and Gradio initialized successfully")
+    # Load the model
+    model = load_model("melanoma_model.keras")
+    logger.info("Model loaded successfully")
 except Exception as e:
-    logger.error("Error during startup", exc_info=True)
+    logger.error("Error loading model", exc_info=True)
     raise e
 
-
-import gradio as gr
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import img_to_array
-from PIL import Image
-import numpy as np
-
-# Load the model
-model = load_model("melanoma_model.keras")
-
-# Function for prediction with a threshold of 70%
+# Prediction function with threshold
 def predict_image(image):
-    # Preprocess the image
-    image = image.convert("RGB")
-    image = image.resize((128, 128))  # Ensure correct input size
-    image = img_to_array(image) / 255.0  # Normalize
-    image = np.expand_dims(image, axis=0)  # Add batch dimension
+    try:
+        # Preprocess the image
+        image = image.convert("RGB")
+        image = image.resize((128, 128))  # Resize to model input size
+        image = img_to_array(image) / 255.0  # Normalize
+        image = np.expand_dims(image, axis=0)  # Add batch dimension
 
-    # Make prediction
-    prediction = model.predict(image)
-    confidence = float(prediction[0][0])
+        # Make prediction
+        prediction = model.predict(image)
+        confidence = float(prediction[0][0])
 
-    # Updated threshold for melanoma classification
-    result = "Melanoma" if confidence >= 0.7 else "Benign"
-    return f"Result: {result} - Confidence: {confidence:.2f}"
+        # Classification based on threshold
+        result = "Melanoma" if confidence >= 0.7 else "Benign"
+        return f"Result: {result} - Confidence: {confidence:.2f}"
+    except Exception as e:
+        # Log error and return message
+        logger.error("Prediction error:", exc_info=True)
+        return "An error occurred during prediction. Please contact support at your_email@example.com."
 
 # Gradio app with example image and updated interface
 with gr.Blocks() as demo:
@@ -72,4 +76,14 @@ with gr.Blocks() as demo:
     # Trigger prediction on button click
     submit_btn.click(predict_image, inputs=image_input, outputs=result_output)
 
+    # Footer with contact info
+    gr.Markdown("""
+    ---
+    <p style="text-align: center; font-size: 16px;">
+        Made with ❤️, data, and code by <span style="color: #228B22; font-weight: bold;">Daniel Moncada León</span>.<br>
+        <a href="mailto:danielmoncada10@gmail.com">danielmoncada10@gmail.com</a>
+    </p>
+    """)
+
+# Launch the Gradio app
 demo.launch()

@@ -1,3 +1,6 @@
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 import gradio as gr
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array

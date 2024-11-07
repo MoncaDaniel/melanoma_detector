@@ -37,5 +37,5 @@ To set up the project and run the model, follow these steps:
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/melanoma-detector.git
+   git clone https://github.com/MoncaDaniel/melanoma-detector.git
    cd melanoma-detector

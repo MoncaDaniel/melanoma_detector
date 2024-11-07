@@ -47,10 +47,6 @@ For a balanced dataset, synthetic data generation techniques are sometimes emplo
 - **Data Augmentation**: Applying augmentations to increase the variety of malignant cases.
 - **Image Synthesis**: Utilizing advanced techniques like GANs to generate additional synthetic samples, if necessary.
 
-## Summary Statistics
-- **Total Images**: X (total number of images after preprocessing)
-- **Benign Cases**: Y (number of benign images)
-- **Malignant Cases**: Z (number of malignant images)
 
 ---
 
